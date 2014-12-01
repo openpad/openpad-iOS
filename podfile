@@ -1,0 +1,8 @@
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/robbiehanson/CocoaAsyncSocket.git'
+source 'https://github.com/zwaldowski/BlocksKit.git'
+source 'https://github.com/nicklockwood/Base64.git'
+pod 'CocoaAsyncSocket', :git => 'https://github.com/robbiehanson/CocoaAsyncSocket.git'
+pod 'BlocksKit', :git => 'https://github.com/zwaldowski/BlocksKit.git'
+pod 'Base64nl', :git => 'https://github.com/nicklockwood/Base64.git'
+pod 'pop', '~> 1.0'

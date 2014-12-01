@@ -1,0 +1,45 @@
+PODS:
+  - Base64nl (1.2)
+  - BlocksKit (2.2.5):
+    - BlocksKit/All
+  - BlocksKit/All (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+    - BlocksKit/MessageUI
+    - BlocksKit/QuickLook
+    - BlocksKit/UIKit
+  - BlocksKit/Core (2.2.5)
+  - BlocksKit/DynamicDelegate (2.2.5)
+  - BlocksKit/MessageUI (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/QuickLook (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/UIKit (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - CocoaAsyncSocket (7.4.1)
+  - pop (1.0.7)
+
+DEPENDENCIES:
+  - Base64nl (from `https://github.com/nicklockwood/Base64.git`)
+  - BlocksKit (from `https://github.com/zwaldowski/BlocksKit.git`)
+  - CocoaAsyncSocket (from `https://github.com/robbiehanson/CocoaAsyncSocket.git`)
+  - pop (~> 1.0)
+
+EXTERNAL SOURCES:
+  Base64nl:
+    :git: https://github.com/nicklockwood/Base64.git
+  BlocksKit:
+    :git: https://github.com/zwaldowski/BlocksKit.git
+  CocoaAsyncSocket:
+    :git: https://github.com/robbiehanson/CocoaAsyncSocket.git
+
+SPEC CHECKSUMS:
+  Base64nl: ca7e1d5ac232fddec4e32553feae81fb730ce3f2
+  BlocksKit: fce66219cce8030475a04eae720cdde22f8fc30b
+  CocoaAsyncSocket: 4bbe8fc969e61e62f408de98faac676468e155b3
+  pop: 2f14a1ea61339767af9e66741b418c831b3844df
+
+COCOAPODS: 0.34.4
