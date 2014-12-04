@@ -20,6 +20,9 @@
 
 @property (nonatomic) GameConnection* game;
 @property (nonatomic) NSMutableDictionary* controls;
+@property (nonatomic) UIButton* backButton;
+-(void)disconnected:(UIButton *) button;
+
 
 -(void)loadControls;
 

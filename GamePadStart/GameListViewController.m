@@ -24,7 +24,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.height, self.view.bounds.size.width) style:UITableViewStyleGrouped];
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.height, self.view.bounds.size.width) style:UITableViewStylePlain];
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
     }
@@ -68,14 +68,19 @@
                   forControlEvents:UIControlEventValueChanged];
     
     
-    [[SocketManager manager] discoverServers];
-    
+    [self discoverServers];
 }
 
 -(void)discoverServers
 {
     [[SocketManager manager] disconnectAll];
     [[SocketManager manager] discoverServers];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self discoverServers];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

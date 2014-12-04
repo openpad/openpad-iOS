@@ -32,13 +32,33 @@ SINGLETON_IMPL(ControllerViewController);
     
     self.view.backgroundColor = BLACK;
     
+    _backButton= [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    _backButton.frame = CGRectMake(10, 10, 50, 20);
+    [_backButton setTitle:@"Back" forState:UIControlStateNormal];
+    _backButton.titleLabel.textColor = GREY;
+    [_backButton setTitleColor:GREY forState:UIControlStateNormal];
+    [_backButton addTarget:self action:@selector(disconnected:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_backButton];
+    
     [self loadControls];
+}
+
+-(void)disconnected:(UIButton *) button
+{
+   [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+       NSLog(@"Going back?!?");
+   }];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     Request* r = [[Request alloc] initWithOp:3];
     [_game sendRequest:r];
+    self.game = nil;
+    for (UIView* temp in [self.view subviews]) {
+        [temp removeFromSuperview];
+    }
+    self.controls = [NSMutableDictionary dictionary];
 }
 
 -(NSUInteger)supportedInterfaceOrientations
@@ -49,6 +69,17 @@ SINGLETON_IMPL(ControllerViewController);
 -(BOOL)shouldAutorotate
 {
     return YES;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    _backButton= [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    _backButton.frame = CGRectMake(10, 10, 50, 20);
+    [_backButton setTitle:@"Back" forState:UIControlStateNormal];
+    _backButton.titleLabel.textColor = GREY;
+    [_backButton setTitleColor:GREY forState:UIControlStateNormal];
+    [_backButton addTarget:self action:@selector(disconnected:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_backButton];
 }
 
 -(void)loadControls{

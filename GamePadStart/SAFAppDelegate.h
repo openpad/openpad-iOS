@@ -15,6 +15,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic) GCDAsyncSocket *socket;
 
+@property (nonatomic) UINavigationController* navCtrlr;
 
 
 @end

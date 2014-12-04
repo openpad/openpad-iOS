@@ -114,13 +114,17 @@
         
         if ([(NSNumber *) temp[@"op"] isEqualToNumber:[NSNumber numberWithInt:3]]) {
             [UIAlertView bk_showAlertViewWithTitle:@"Disconnected by  Server" message:x cancelButtonTitle:@"Okay" otherButtonTitles:nil
-                                handler:^(UIAlertView *alertView, NSInteger buttonIndex) {  NSLog(@"Disconnected by server alert showed");}];
+                                handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                    NSLog(@"Disconnected by server alert showed");
+                                    /** Go back to discovery*/
+                                    [[ControllerViewController sharedInstance] disconnected:nil];
+            }];
 
-            /** Go back to discovery*/
-            [[SocketManager manager] discoverServers];
+            
+            
             return;
-                }
-
+        }
+ 
         //If it is a Update Pad Config Request...
         if ([(NSNumber *) temp[@"op"] isEqualToNumber:[NSNumber numberWithInt:4]]) {
             _padconfig = temp[@"padconfig"];

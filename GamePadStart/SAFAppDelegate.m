@@ -9,6 +9,7 @@
 #import "SAFAppDelegate.h"
 #import "GameListViewController.h"
 #import "PersistentDictionary.h"
+#import "ControllerViewController.h"
 
 @implementation SAFAppDelegate
 
@@ -19,21 +20,22 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
 
-    UINavigationController* navCtrlr = [[UINavigationController alloc]  init];
-    [self.window setRootViewController:navCtrlr];
+    _navCtrlr = [[UINavigationController alloc]  init];
+    [self.window setRootViewController:_navCtrlr];
+    _navCtrlr.navigationBar.barTintColor = RED;
+
     
     NSMutableDictionary* temp = [UserData getUserData];
     if(!temp[@"username"] || !temp[@"firstname"] || !temp[@"lastname"])
     {
-        [self.window setRootViewController:[[TestLoginViewController alloc] init]];
+        [_navCtrlr pushViewController:[[TestLoginViewController alloc] init] animated:YES];
     }
     else
     {
 
         [SocketManager manager].gamesViewController = [[GameListViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [navCtrlr pushViewController:[[TestLoginViewController alloc] init] animated:YES];
-        [navCtrlr pushViewController:[SocketManager manager].gamesViewController animated:YES];
-        navCtrlr.navigationBar.barTintColor = RED;
+        [_navCtrlr pushViewController:[[TestLoginViewController alloc] init] animated:YES];
+        [_navCtrlr pushViewController:[SocketManager manager].gamesViewController animated:YES];
     }
     [self.window makeKeyAndVisible];
     
@@ -46,6 +48,11 @@
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
+    if([ControllerViewController sharedInstance].game)
+    {
+        Request* r = [[Request alloc] initWithOp:3];
+        [[ControllerViewController sharedInstance].game sendRequest:r];
+    };
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -53,7 +60,11 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [PersistentDictionary saveAllDictionaries];
-
+    if([ControllerViewController sharedInstance].game)
+    {
+        Request* r = [[Request alloc] initWithOp:3];
+        [[ControllerViewController sharedInstance].game sendRequest:r];
+    };
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -68,6 +79,11 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    if([ControllerViewController sharedInstance].game)
+    {
+        Request* r = [[Request alloc] initWithOp:3];
+        [[ControllerViewController sharedInstance].game sendRequest:r];
+    };
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [PersistentDictionary saveAllDictionaries];
 

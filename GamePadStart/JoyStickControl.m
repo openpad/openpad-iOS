@@ -95,6 +95,8 @@
     
     [[ControllerViewController sharedInstance].game sendRequest:r];
 
+    
+
     _stickImgView.frame = CGRectMake(x - self.bounds.size.width/4, y - self.bounds.size.height/4, self.bounds.size.width/2, self.bounds.size.height/2);
 }
 
@@ -116,7 +118,11 @@
     
     r.data[@"position"] = @{@"x": [NSNumber numberWithFloat:(locX-.5)], @"y": [NSNumber numberWithFloat:(locY-.5)]};
     
+    
     [[ControllerViewController sharedInstance].game sendRequest:r];
+    
+    int temp = self.bounds.size.width;
+    _stickImgView.frame = CGRectMake(temp/2 - temp/4, temp/2 - temp/4, temp/2, temp/2); ///Center the control
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event

@@ -70,58 +70,48 @@
 {
     [super viewDidLoad];
     
-    
+    self.view.backgroundColor = BLACK;
     
     /** Set up the foreground box to fit the screen */
     _fgView = [[UIView alloc] initWithFrame:CGRectMake(40, 80,  WIDTH - 80, HEIGHT - 216 - 54)];
     _fgView.backgroundColor = [UIColor clearColor];
-    
     _fgView.layer.masksToBounds = NO;
     _fgView.layer.cornerRadius = 8; // if you like rounded corners
     _fgView.layer.shadowOffset = CGSizeMake(0,0);
     _fgView.layer.shadowRadius = 3;
     _fgView.layer.shadowOpacity = 0.5;
+    [self.view addSubview:_fgView];
     
     
     /** Useful for creating the UI based on the foreground box */
 #define FGWIDTH _fgView.bounds.size.width
 #define FGHEIGHT _fgView.bounds.size.height
     
-//    /** Create the background view */
-//    _bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundTexture.jpg"]];
-//    _bgView.transform = CGAffineTransformMakeRotation(M_PI_2);
-//    _bgView.frame = self.view.bounds;
-//    [self.view addSubview:_bgView];
-    self.view.backgroundColor = BLACK;
-    
-    [self.view addSubview:_fgView];
-    
     
     /** Set up fgView */
     UIImage* tempImg = [UIImage imageNamed:@"Logo_Transparent.png"];
     _logo = [[UIImageView alloc] initWithImage:tempImg];
-    _logo.frame = CGRectMake(FGWIDTH/2 - FGHEIGHT*3/16, 5, FGHEIGHT*3/8, FGHEIGHT*3/8);
+    
+    int hgtConst = FGHEIGHT - 130;
+    
+    
+    _logo.frame = CGRectMake(FGWIDTH/2 - hgtConst*3/8, 5, hgtConst*3/4, hgtConst*3/4);
     [_fgView addSubview:_logo];
     
-    _openPad = [[UILabel alloc] initWithFrame:CGRectMake(0, 5 + FGHEIGHT*3/8, FGWIDTH, FGHEIGHT/8)];
+    _openPad = [[UILabel alloc] initWithFrame:CGRectMake(0, 5 + hgtConst*3/4, FGWIDTH, hgtConst/4)];
     _openPad.text = @"{openpad}";
-    _openPad.backgroundColor = BLACK;
     _openPad.textAlignment = NSTextAlignmentCenter;
+    _openPad.baselineAdjustment = UIBaselineAdjustmentNone;
      _openPad.textColor = GREY;
     _openPad.numberOfLines = 1;
-    _openPad.font = [UIFont systemFontOfSize:FGHEIGHT/8];
+    _openPad.font = [UIFont systemFontOfSize:hgtConst/4 - 5];
+    _openPad.layer.masksToBounds = NO;
     _openPad.adjustsFontSizeToFitWidth = YES;
-//    _openPad.backgroundColor = RED;
+//    _openPad.backgroundColor = DARKRED;
     [_fgView addSubview:_openPad];
-    
-    int newHeight = _openPad.font.pointSize;
-    _openPad.frame = CGRectMake(0, 5 + FGHEIGHT/4, FGWIDTH, newHeight);
-    
-    int highPt = newHeight + FGHEIGHT/4+ 5;
-
-    _firstName = [[UITextField alloc] initWithFrame:CGRectMake(FGWIDTH/4, highPt + 10, FGWIDTH/2, 20)];
-    _lastName = [[UITextField alloc] initWithFrame:CGRectMake(FGWIDTH/4, highPt + 40, FGWIDTH/2, 20)];
-    _username = [[UITextField alloc] initWithFrame:CGRectMake(FGWIDTH/4, highPt + 70, FGWIDTH/2, 20)];
+    _firstName = [[UITextField alloc] initWithFrame:CGRectMake(FGWIDTH/4, FGHEIGHT - 115, FGWIDTH/2, 20)];
+    _lastName = [[UITextField alloc] initWithFrame:CGRectMake(FGWIDTH/4, FGHEIGHT - 85, FGWIDTH/2, 20)];
+    _username = [[UITextField alloc] initWithFrame:CGRectMake(FGWIDTH/4, FGHEIGHT - 55, FGWIDTH/2, 20)];
     
     
     _firstName.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -146,9 +136,10 @@
     [_fgView addSubview:_username];
     
     _submit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _submit.frame = CGRectMake(FGWIDTH/4, highPt + 95, FGWIDTH/2, 20);
+    _submit.frame = CGRectMake(FGWIDTH/4, FGHEIGHT - 25, FGWIDTH/2, 20);
     [_submit setTitle:@"Continue" forState:UIControlStateNormal];
     _submit.titleLabel.textColor = GREY;
+    [_submit setTitleColor:GREY forState:UIControlStateNormal];
     [_submit addTarget:self action:@selector(submitted:) forControlEvents:UIControlEventTouchUpInside];
     
     [_fgView addSubview:_submit];
@@ -157,32 +148,20 @@
     _lastName.placeholder = @"Doe";
     _username.placeholder = @"XxX_$w@gYo1o420_XxX";
     
-    /** Fill the fields */
+    /** Fill the fields if possible */
     NSMutableDictionary* temp = [UserData getUserData];
 
-    if(!temp[@"firstname"])
-    {
-        _firstName.placeholder = @"John";
-    }
-    else
+    if(temp[@"firstname"])
     {
         _firstName.text = temp[@"firstname"];
     }
     
-    if (!temp[@"lastname"])
-    {
-        _lastName.placeholder = @"Doe";
-    }
-    else
+    if (temp[@"lastname"])
     {
         _lastName.text = temp[@"lastname"];
     }
     
-    if(!temp[@"username"])
-    {
-        _username.placeholder = @"XxX_$w@gYo1o420_XxX";
-    }
-    else
+    if(temp[@"username"])
     {
         _username.text = temp[@"username"];
     }
@@ -192,6 +171,14 @@
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
+    
+    _fgView.transform = CGAffineTransformMakeTranslation(0, HEIGHT);
+    _logo.transform = CGAffineTransformMakeScale(.01, .01);
+    _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -216,74 +203,97 @@
     temp[@"username"] = _username.text;
     temp[@"firstname"] = _firstName.text;
     temp[@"lastname"] = _lastName.text;
+    
+    _fgView.transform = CGAffineTransformMakeTranslation(0, HEIGHT);
+    _logo.transform = CGAffineTransformMakeScale(.01, .01);
+    _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    /** Fill the fields if possible */
+    NSMutableDictionary* temp = [UserData getUserData];
+    
+    if(temp[@"firstname"])
+    {
+        _firstName.text = temp[@"firstname"];
+    }
+    
+    if (temp[@"lastname"])
+    {
+        _lastName.text = temp[@"lastname"];
+    }
+    
+    if(temp[@"username"])
+    {
+        _username.text = temp[@"username"];
+    }
+}
 
 -(void)viewDidAppear:(BOOL)animated
 {
     
-    /** Animate! */
-    NSMutableDictionary* temp = [UserData getUserData];
+//    NSMutableDictionary* temp = [UserData getUserData];
 
     /** As long as everything exists, animate normally */
-    if(temp[@"username"] && temp[@"firstname"] && temp[@"lastname"])
+//    if(temp[@"username"] && temp[@"firstname"] && temp[@"lastname"])
     {
-        /** Prepare for animations */
-        _fgView.transform = CGAffineTransformMakeTranslation(0, HEIGHT);
-        _logo.transform = CGAffineTransformMakeScale(.01, .01);
-        _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        
-        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        /** ANIMATE! */
+        [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _fgView.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
         
-        [UIView animateWithDuration:.5 delay:.5 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [UIView animateWithDuration:.5 delay:0 usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _logo.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
         
-        [UIView animateWithDuration:.5 delay:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [UIView animateWithDuration:.5 delay:.5 usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _openPad.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
         
-        [UIView animateWithDuration:.5 delay:1.25 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [UIView animateWithDuration:.5 delay:.75  usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _firstName.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
         
-        [UIView animateWithDuration:.5 delay:1.5 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [UIView animateWithDuration:.5 delay:1 usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _lastName.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
         
-        [UIView animateWithDuration:.5 delay:1.75 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [UIView animateWithDuration:.5 delay:1.25 usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _username.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
         
-        [UIView animateWithDuration:.5 delay:2 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [UIView animateWithDuration:.5 delay:1.5  usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _submit.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
     }
-    else {
-        _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-        
-        _logo.frame = CGRectMake(_logo.frame.origin.x, HEIGHT/2 - (_logo.frame.size.height)*2.5/2, _logo.frame.size.width, _logo.frame.size.height);
-        POPSpringAnimation* logoAnim = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
-        logoAnim.fromValue = [NSValue valueWithCGPoint:CGPointMake(.01, .01)];
-        logoAnim.toValue = [NSValue valueWithCGPoint:CGPointMake(2.5, 2.5)];
-        logoAnim.velocity = [NSValue valueWithCGPoint:CGPointMake(.005, .005)];
-        logoAnim.springBounciness = 20;
-        [_logo.layer pop_addAnimation:logoAnim forKey:@"scale"];
-        
-        logoAnim.completionBlock = ^(POPAnimation *anim, BOOL finished) {
-            NSLog(@"Animation has completed.");
-        };
-        
+#warning fuck this shit not worth my time
+    
+    
+//    /** First time app launch only*/ #warning fuck this shit literally
+//    else {
+//        _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        
+//        _logo.frame = CGRectMake(_logo.frame.origin.x, HEIGHT/2 - (_logo.frame.size.height)*2.5/2, _logo.frame.size.width, _logo.frame.size.height);
+//        POPSpringAnimation* logoAnim = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
+//        logoAnim.fromValue = [NSValue valueWithCGPoint:CGPointMake(.01, .01)];
+//        logoAnim.toValue = [NSValue valueWithCGPoint:CGPointMake(2.5, 2.5)];
+//        logoAnim.velocity = [NSValue valueWithCGPoint:CGPointMake(.005, .005)];
+//        logoAnim.springBounciness = 20;
+//        [_logo.layer pop_addAnimation:logoAnim forKey:@"scale"];
+//        
+//        logoAnim.completionBlock = ^(POPAnimation *anim, BOOL finished) {
+//            NSLog(@"Animation has completed.");
+//        };
+//        
 //        //_fgView.transform = CGAffineTransformMakeTranslation(0, HEIGHT);
 //        _logo.frame = CGRectMake(_logo.frame.origin.x, HEIGHT/2 - _logo.frame.size.height/2 - 80, _logo.frame.size.width, _logo.frame.size.height);
 //        _logo.transform = CGAffineTransformMakeScale(.01, .01);
@@ -298,8 +308,95 @@
 //        [UIView animateWithDuration:1 delay:2 usingSpringWithDamping:.5 initialSpringVelocity:1 options:0 animations:^{
 //            _logo.transform = CGAffineTransformMakeTranslation(0, 85 - (HEIGHT/2 - _logo.frame.size.height/2 - 80));
 //        } completion:^(BOOL finished) { }];
-        
+//        
+//    }
+}
+
+- (void) animateStarEarnToInt:(int)earnTo {
+    float animDuration = 0.7;
+//    
+//    /* Find point to start animation */
+//    SCNView *scnView = (SCNView *)self.view;
+//    LevelModelDynamic *curState = &_dynamicLevelState[_currentStateIndex];
+//    SCNVector3 orig   = [_levelNode.nodeT positionForTile:curState->tile_T inModel:_levelModel];
+//    orig = [_levelNode worldCoordinateForPosition:orig];
+//    SCNVector3 origProj = [scnView projectPoint:orig];
+    
+    CGPoint startCen  = CGPointMake(100,100);//origProj.x, origProj.y);
+    CGPoint endCen   = CGPointMake(400, 400);//_starsImage.center;
+    
+    UIImageView *star_gold = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"star42"]];
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, startCen.x, startCen.y);
+    CGPathAddQuadCurveToPoint(path, NULL, /*self.view.frame.size.width/2*/ startCen.x, 0, endCen.x, endCen.y);
+    
+    star_gold.center = startCen;
+    star_gold.alpha  = 0;
+    
+    [self.view addSubview:star_gold];
+    
+    /* Animate path */
+    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    pathAnimation.path = path;
+    pathAnimation.duration = animDuration;
+    [star_gold.layer addAnimation:pathAnimation forKey:@"pos"];
+    
+    /* Animate alpha */ {
+        CAKeyframeAnimation *animation;
+        animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
+        animation.duration = animDuration;
+        animation.cumulative = NO;
+        animation.values = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:1], [NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.0], nil];
+        animation.keyTimes = [NSArray arrayWithObjects: [NSNumber numberWithFloat:0], [NSNumber numberWithFloat:.03], [NSNumber numberWithFloat:.95], [NSNumber numberWithFloat:1.0], nil];
+        [star_gold.layer addAnimation:animation forKey:@"opa"];
     }
+    
+    /* Animate size and rotation */
+    {
+        CAKeyframeAnimation *transanimation;
+        transanimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+        transanimation.duration = animDuration;
+        transanimation.cumulative = NO;
+        transanimation.values = [NSArray arrayWithObjects:           // i.e., Rotation values for the 3 keyframes, in RADIANS
+                                 [NSNumber numberWithFloat:1.0],
+                                 [NSNumber numberWithFloat:2.0],
+                                 [NSNumber numberWithFloat:1.0], nil];
+        transanimation.keyTimes = [NSArray arrayWithObjects:     // Relative timing values for the 3 keyframes
+                                   [NSNumber numberWithFloat:0],
+                                   [NSNumber numberWithFloat:.5],
+                                   [NSNumber numberWithFloat:1.0], nil];
+        transanimation.timingFunctions = [NSArray arrayWithObjects:
+                                          [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],        // from keyframe 1 to keyframe 2
+                                          [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn], nil]; // from keyframe 2 to keyframe 3
+        [star_gold.layer addAnimation:transanimation forKey:@"sca"];
+    }
+    
+    {
+        CAKeyframeAnimation *transanimation;
+        transanimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.rotation"];
+        transanimation.duration = animDuration;
+        transanimation.cumulative = NO;
+        transanimation.values = [NSArray arrayWithObjects:           // i.e., Rotation values for the 3 keyframes, in RADIANS
+                                 [NSNumber numberWithFloat:M_PI*0.5],
+                                 [NSNumber numberWithFloat:M_PI*1.0],
+                                 [NSNumber numberWithFloat:M_PI*1.5], nil];
+        transanimation.keyTimes = [NSArray arrayWithObjects:     // Relative timing values for the 3 keyframes
+                                   [NSNumber numberWithFloat:0],
+                                   [NSNumber numberWithFloat:.5],
+                                   [NSNumber numberWithFloat:1.0], nil];
+        [star_gold.layer addAnimation:transanimation forKey:@"rot"];
+    }
+    
+    [star_gold performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:animDuration];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(animDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self menuStarBurst];
+//        _starsLabel.text = [NSString stringWithFormat:@"%d", earnTo];
+    });
+    
+    CGPathRelease(path);
+    
 }
 
 -(void)submitted:(UIButton *) button
@@ -309,6 +406,7 @@
         [UIAlertView bk_showAlertViewWithTitle:@"Missing Fields" message:@"Fill in all fields to continue" cancelButtonTitle:@"Try again" otherButtonTitles:nil handler:^(UIAlertView *alertView, NSInteger buttonIndex) {}];
         return;
     }
+    
     NSMutableDictionary* temp = [UserData getUserData];
     temp[@"username"] = _username.text;
     temp[@"firstname"] = _firstName.text;
