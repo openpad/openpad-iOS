@@ -10,6 +10,8 @@
 #import "GameListViewController.h"
 #import "PersistentDictionary.h"
 #import "ControllerViewController.h"
+//#import <FacebookSDK/FacebookSDK.h>
+
 
 @implementation SAFAppDelegate
 
@@ -42,6 +44,15 @@
     return YES;
 }
 
+//- (BOOL)application:(UIApplication *)application
+//            openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication
+//         annotation:(id)annotation {
+//    // attempt to extract a token from the url
+//    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+//}
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -52,6 +63,7 @@
     {
         Request* r = [[Request alloc] initWithOp:3];
         [[ControllerViewController sharedInstance].game sendRequest:r];
+        [[ControllerViewController sharedInstance] disconnected:nil];
     };
 }
 
@@ -64,6 +76,7 @@
     {
         Request* r = [[Request alloc] initWithOp:3];
         [[ControllerViewController sharedInstance].game sendRequest:r];
+        [[ControllerViewController sharedInstance] disconnected:nil];
     };
 }
 
@@ -75,6 +88,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    // Logs 'install' and 'app activate' App Events.
+//    [FBAppEvents activateApp];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -83,6 +98,7 @@
     {
         Request* r = [[Request alloc] initWithOp:3];
         [[ControllerViewController sharedInstance].game sendRequest:r];
+        [[ControllerViewController sharedInstance] disconnected:nil];
     };
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [PersistentDictionary saveAllDictionaries];

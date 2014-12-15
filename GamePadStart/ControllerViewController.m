@@ -45,16 +45,18 @@ SINGLETON_IMPL(ControllerViewController);
 
 -(void)disconnected:(UIButton *) button
 {
+    [[SocketManager manager] disconnectAll];
+
    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
        NSLog(@"Going back?!?");
    }];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     Request* r = [[Request alloc] initWithOp:3];
     [_game sendRequest:r];
-    self.game = nil;
     for (UIView* temp in [self.view subviews]) {
         [temp removeFromSuperview];
     }
@@ -82,7 +84,27 @@ SINGLETON_IMPL(ControllerViewController);
     [self.view addSubview:_backButton];
 }
 
--(void)loadControls{
+
+//-(void)viewDidAppear:(BOOL)animated
+//{
+//    if(UIInterfaceOrientationIsPortrait([[UIDevice currentDevice] orientation]))
+//    {
+//            NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
+//            [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+//    }
+    
+//    [self loadControls];
+//
+//}
+
+-(void)loadControls {
+//    
+//    for (UIView* temp in [self.view subviews]) {
+//        if(![temp isEqual:_backButton])
+//            [temp removeFromSuperview];
+//    }
+    
+    
     NSArray* controlsArray = _game.padconfig[@"controls"];
     for(NSDictionary* ctrl in controlsArray){
         int type = [ctrl[@"type"] intValue];

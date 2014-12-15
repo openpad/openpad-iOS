@@ -11,13 +11,15 @@
 #import "BackgroundLayer.h"
 #import "SocketManager.h"
 #import  <pop/POP.h>
+//#import <FacebookSDK/FacebookSDK.h>
+
 
 
 @implementation UINavigationController (DUMBROTATIONFIX)
 
 -(BOOL)shouldAutorotate
 {
-    return YES;[[self.viewControllers lastObject] shouldAutorotate];
+    return YES; //[[self.viewControllers lastObject] shouldAutorotate];
 }
 
 -(NSUInteger)supportedInterfaceOrientations
@@ -69,6 +71,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     self.view.backgroundColor = BLACK;
     
@@ -144,9 +147,9 @@
     
     [_fgView addSubview:_submit];
     
-    _firstName.placeholder = @"John";
-    _lastName.placeholder = @"Doe";
-    _username.placeholder = @"XxX_$w@gYo1o420_XxX";
+    _firstName.placeholder = @"First name";
+    _lastName.placeholder = @"Last name";
+    _username.placeholder = @"Username";
     
     /** Fill the fields if possible */
     NSMutableDictionary* temp = [UserData getUserData];
@@ -172,13 +175,26 @@
                                    action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
     
-    _fgView.transform = CGAffineTransformMakeTranslation(0, HEIGHT);
-    _logo.transform = CGAffineTransformMakeScale(.01, .01);
-    _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-    _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-    _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-    _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
-    _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    
+//    if(temp[@"username"] && temp[@"firstname"] && temp[@"lastname"])
+    {
+        _fgView.transform = CGAffineTransformMakeTranslation(0, HEIGHT);
+        _logo.transform = CGAffineTransformMakeScale(.01, .01);
+        _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+        _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+        _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+        _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+        _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+    }
+//    else{
+//        ///Don't transform logo since using Explicit animations
+//        _openPad.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _firstName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _lastName.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _username.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//        _submit.transform = CGAffineTransformMakeTranslation(WIDTH, 0);
+//    }
+
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -232,6 +248,12 @@
     {
         _username.text = temp[@"username"];
     }
+    
+//    if(!UIInterfaceOrientationIsPortrait([[UIDevice currentDevice] orientation]))
+//    {
+//        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+//        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+//    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -243,6 +265,7 @@
 //    if(temp[@"username"] && temp[@"firstname"] && temp[@"lastname"])
     {
         /** ANIMATE! */
+        
         [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _fgView.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
@@ -267,12 +290,40 @@
             _username.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){}];
         
-        [UIView animateWithDuration:.5 delay:1.5  usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        [UIView animateWithDuration:.5 delay:1.5 usingSpringWithDamping:.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             _submit.transform = CGAffineTransformIdentity;
-        } completion:^(BOOL finished){}];
+        } completion:^(BOOL finished){
+        
+//        
+//            FBLoginView *loginView = [[FBLoginView alloc] init];
+//            loginView.center = self.view.center;
+//            [self.view addSubview:loginView];
+
+        
+        
+        }];
     }
-#warning fuck this shit not worth my time
-    
+//    else /** For the first time the app opens */
+//    {
+//        [self.navigationController setNavigationBarHidden:YES];
+//        {
+//            _logo.center = CGPointMake(WIDTH/2, HEIGHT/2);
+//            POPSpringAnimation* anim = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
+//            anim.fromValue = [NSValue valueWithCGPoint:CGPointMake(.01, .01)];
+//            
+//            float scaleFactor;
+//            scaleFactor = (self.view.bounds.size.width/ _logo.bounds.size.width);
+//            anim.toValue = [NSValue valueWithCGPoint:CGPointMake(scaleFactor, scaleFactor)];
+//            anim.velocity = [NSValue valueWithCGPoint:CGPointMake(.005, .005)];
+//            anim.springBounciness = 20;
+//            anim.removedOnCompletion = NO;
+//            [_logo.layer pop_addAnimation:anim forKey:@"scale"];
+//            
+//            anim.completionBlock = ^(POPAnimation *anim, BOOL finished) {
+//                NSLog(@"Animation has completed.");
+//            };
+//        }
+//    }
     
 //    /** First time app launch only*/ #warning fuck this shit literally
 //    else {
@@ -312,92 +363,93 @@
 //    }
 }
 
-- (void) animateStarEarnToInt:(int)earnTo {
-    float animDuration = 0.7;
+
+//- (void) animateStarEarnToInt:(int)earnTo {
+//    float animDuration = 0.7;
+////    
+////    /* Find point to start animation */
+////    SCNView *scnView = (SCNView *)self.view;
+////    LevelModelDynamic *curState = &_dynamicLevelState[_currentStateIndex];
+////    SCNVector3 orig   = [_levelNode.nodeT positionForTile:curState->tile_T inModel:_levelModel];
+////    orig = [_levelNode worldCoordinateForPosition:orig];
+////    SCNVector3 origProj = [scnView projectPoint:orig];
 //    
-//    /* Find point to start animation */
-//    SCNView *scnView = (SCNView *)self.view;
-//    LevelModelDynamic *curState = &_dynamicLevelState[_currentStateIndex];
-//    SCNVector3 orig   = [_levelNode.nodeT positionForTile:curState->tile_T inModel:_levelModel];
-//    orig = [_levelNode worldCoordinateForPosition:orig];
-//    SCNVector3 origProj = [scnView projectPoint:orig];
-    
-    CGPoint startCen  = CGPointMake(100,100);//origProj.x, origProj.y);
-    CGPoint endCen   = CGPointMake(400, 400);//_starsImage.center;
-    
-    UIImageView *star_gold = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"star42"]];
-    
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, startCen.x, startCen.y);
-    CGPathAddQuadCurveToPoint(path, NULL, /*self.view.frame.size.width/2*/ startCen.x, 0, endCen.x, endCen.y);
-    
-    star_gold.center = startCen;
-    star_gold.alpha  = 0;
-    
-    [self.view addSubview:star_gold];
-    
-    /* Animate path */
-    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-    pathAnimation.path = path;
-    pathAnimation.duration = animDuration;
-    [star_gold.layer addAnimation:pathAnimation forKey:@"pos"];
-    
-    /* Animate alpha */ {
-        CAKeyframeAnimation *animation;
-        animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
-        animation.duration = animDuration;
-        animation.cumulative = NO;
-        animation.values = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:1], [NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.0], nil];
-        animation.keyTimes = [NSArray arrayWithObjects: [NSNumber numberWithFloat:0], [NSNumber numberWithFloat:.03], [NSNumber numberWithFloat:.95], [NSNumber numberWithFloat:1.0], nil];
-        [star_gold.layer addAnimation:animation forKey:@"opa"];
-    }
-    
-    /* Animate size and rotation */
-    {
-        CAKeyframeAnimation *transanimation;
-        transanimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
-        transanimation.duration = animDuration;
-        transanimation.cumulative = NO;
-        transanimation.values = [NSArray arrayWithObjects:           // i.e., Rotation values for the 3 keyframes, in RADIANS
-                                 [NSNumber numberWithFloat:1.0],
-                                 [NSNumber numberWithFloat:2.0],
-                                 [NSNumber numberWithFloat:1.0], nil];
-        transanimation.keyTimes = [NSArray arrayWithObjects:     // Relative timing values for the 3 keyframes
-                                   [NSNumber numberWithFloat:0],
-                                   [NSNumber numberWithFloat:.5],
-                                   [NSNumber numberWithFloat:1.0], nil];
-        transanimation.timingFunctions = [NSArray arrayWithObjects:
-                                          [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],        // from keyframe 1 to keyframe 2
-                                          [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn], nil]; // from keyframe 2 to keyframe 3
-        [star_gold.layer addAnimation:transanimation forKey:@"sca"];
-    }
-    
-    {
-        CAKeyframeAnimation *transanimation;
-        transanimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.rotation"];
-        transanimation.duration = animDuration;
-        transanimation.cumulative = NO;
-        transanimation.values = [NSArray arrayWithObjects:           // i.e., Rotation values for the 3 keyframes, in RADIANS
-                                 [NSNumber numberWithFloat:M_PI*0.5],
-                                 [NSNumber numberWithFloat:M_PI*1.0],
-                                 [NSNumber numberWithFloat:M_PI*1.5], nil];
-        transanimation.keyTimes = [NSArray arrayWithObjects:     // Relative timing values for the 3 keyframes
-                                   [NSNumber numberWithFloat:0],
-                                   [NSNumber numberWithFloat:.5],
-                                   [NSNumber numberWithFloat:1.0], nil];
-        [star_gold.layer addAnimation:transanimation forKey:@"rot"];
-    }
-    
-    [star_gold performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:animDuration];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(animDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self menuStarBurst];
-//        _starsLabel.text = [NSString stringWithFormat:@"%d", earnTo];
-    });
-    
-    CGPathRelease(path);
-    
-}
+//    CGPoint startCen  = CGPointMake(100,100);//origProj.x, origProj.y);
+//    CGPoint endCen   = CGPointMake(400, 400);//_starsImage.center;
+//    
+//    UIImageView *star_gold = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"star42"]];
+//    
+//    CGMutablePathRef path = CGPathCreateMutable();
+//    CGPathMoveToPoint(path, NULL, startCen.x, startCen.y);
+//    CGPathAddQuadCurveToPoint(path, NULL, /*self.view.frame.size.width/2*/ startCen.x, 0, endCen.x, endCen.y);
+//    
+//    star_gold.center = startCen;
+//    star_gold.alpha  = 0;
+//    
+//    [self.view addSubview:star_gold];
+//    
+//    /* Animate path */
+//    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+//    pathAnimation.path = path;
+//    pathAnimation.duration = animDuration;
+//    [star_gold.layer addAnimation:pathAnimation forKey:@"pos"];
+//    
+//    /* Animate alpha */ {
+//        CAKeyframeAnimation *animation;
+//        animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
+//        animation.duration = animDuration;
+//        animation.cumulative = NO;
+//        animation.values = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:1], [NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.0], nil];
+//        animation.keyTimes = [NSArray arrayWithObjects: [NSNumber numberWithFloat:0], [NSNumber numberWithFloat:.03], [NSNumber numberWithFloat:.95], [NSNumber numberWithFloat:1.0], nil];
+//        [star_gold.layer addAnimation:animation forKey:@"opa"];
+//    }
+//    
+//    /* Animate size and rotation */
+//    {
+//        CAKeyframeAnimation *transanimation;
+//        transanimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+//        transanimation.duration = animDuration;
+//        transanimation.cumulative = NO;
+//        transanimation.values = [NSArray arrayWithObjects:           // i.e., Rotation values for the 3 keyframes, in RADIANS
+//                                 [NSNumber numberWithFloat:1.0],
+//                                 [NSNumber numberWithFloat:2.0],
+//                                 [NSNumber numberWithFloat:1.0], nil];
+//        transanimation.keyTimes = [NSArray arrayWithObjects:     // Relative timing values for the 3 keyframes
+//                                   [NSNumber numberWithFloat:0],
+//                                   [NSNumber numberWithFloat:.5],
+//                                   [NSNumber numberWithFloat:1.0], nil];
+//        transanimation.timingFunctions = [NSArray arrayWithObjects:
+//                                          [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],        // from keyframe 1 to keyframe 2
+//                                          [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn], nil]; // from keyframe 2 to keyframe 3
+//        [star_gold.layer addAnimation:transanimation forKey:@"sca"];
+//    }
+//    
+//    {
+//        CAKeyframeAnimation *transanimation;
+//        transanimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.rotation"];
+//        transanimation.duration = animDuration;
+//        transanimation.cumulative = NO;
+//        transanimation.values = [NSArray arrayWithObjects:           // i.e., Rotation values for the 3 keyframes, in RADIANS
+//                                 [NSNumber numberWithFloat:M_PI*0.5],
+//                                 [NSNumber numberWithFloat:M_PI*1.0],
+//                                 [NSNumber numberWithFloat:M_PI*1.5], nil];
+//        transanimation.keyTimes = [NSArray arrayWithObjects:     // Relative timing values for the 3 keyframes
+//                                   [NSNumber numberWithFloat:0],
+//                                   [NSNumber numberWithFloat:.5],
+//                                   [NSNumber numberWithFloat:1.0], nil];
+//        [star_gold.layer addAnimation:transanimation forKey:@"rot"];
+//    }
+//    
+//    [star_gold performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:animDuration];
+//    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(animDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+////        [self menuStarBurst];
+////        _starsLabel.text = [NSString stringWithFormat:@"%d", earnTo];
+//    });
+//    
+//    CGPathRelease(path);
+//    
+//}
 
 -(void)submitted:(UIButton *) button
 {

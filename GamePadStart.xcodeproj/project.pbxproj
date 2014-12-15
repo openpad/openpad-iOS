@@ -35,6 +35,10 @@
 		23A5DE6619FAF53500F96993 /* GameConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A5DE6519FAF53500F96993 /* GameConnection.m */; };
 		23A5DE6C19FC617200F96993 /* GameListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A5DE6B19FC617200F96993 /* GameListViewController.m */; };
 		23A5DE6F19FC7D6000F96993 /* PersistentDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A5DE6E19FC7D6000F96993 /* PersistentDictionary.m */; };
+		23A9341D1A3628FF001B12BE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A9341C1A3628FF001B12BE /* LaunchScreen.xib */; };
+		23A934231A362FE9001B12BE /* Logo180180.png in Resources */ = {isa = PBXBuildFile; fileRef = 23A934221A362FE9001B12BE /* Logo180180.png */; };
+		23A934261A3632BE001B12BE /* i5launchFIXED.png in Resources */ = {isa = PBXBuildFile; fileRef = 23A934241A3632BE001B12BE /* i5launchFIXED.png */; };
+		23A934271A3632BE001B12BE /* i4launchFIXED.png in Resources */ = {isa = PBXBuildFile; fileRef = 23A934251A3632BE001B12BE /* i4launchFIXED.png */; };
 		23A93C2F19F8168D00E85E96 /* SocketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A93C2E19F8168D00E85E96 /* SocketManager.m */; };
 		23C14D6A1A1BBF4200F4DFA6 /* JoyStickControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C14D691A1BBF4200F4DFA6 /* JoyStickControl.m */; };
 		23C14D6D1A1BC42600F4DFA6 /* Circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C14D6B1A1BC42600F4DFA6 /* Circle.png */; };
@@ -108,6 +112,10 @@
 		23A5DE6B19FC617200F96993 /* GameListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameListViewController.m; sourceTree = "<group>"; };
 		23A5DE6D19FC7D6000F96993 /* PersistentDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentDictionary.h; sourceTree = "<group>"; };
 		23A5DE6E19FC7D6000F96993 /* PersistentDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentDictionary.m; sourceTree = "<group>"; };
+		23A9341C1A3628FF001B12BE /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		23A934221A362FE9001B12BE /* Logo180180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo180180.png; sourceTree = "<group>"; };
+		23A934241A3632BE001B12BE /* i5launchFIXED.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = i5launchFIXED.png; path = ../GamePadStart/i5launchFIXED.png; sourceTree = "<group>"; };
+		23A934251A3632BE001B12BE /* i4launchFIXED.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = i4launchFIXED.png; path = ../GamePadStart/i4launchFIXED.png; sourceTree = "<group>"; };
 		23A93C2D19F8168D00E85E96 /* SocketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketManager.h; sourceTree = "<group>"; };
 		23A93C2E19F8168D00E85E96 /* SocketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketManager.m; sourceTree = "<group>"; };
 		23C14D681A1BBF4200F4DFA6 /* JoyStickControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoyStickControl.h; sourceTree = "<group>"; };
@@ -173,6 +181,9 @@
 		2328151F1A1286FA004EB34C /* ButtonImages */ = {
 			isa = PBXGroup;
 			children = (
+				23A934241A3632BE001B12BE /* i5launchFIXED.png */,
+				23A934251A3632BE001B12BE /* i4launchFIXED.png */,
+				23A934221A362FE9001B12BE /* Logo180180.png */,
 				23E323D61A23AE39004D9514 /* backgroundTexture.jpg */,
 				235062811A2079EB00BF172D /* Logo120120.png */,
 				235062821A2079EB00BF172D /* Logo8080.png */,
@@ -240,6 +251,7 @@
 				23A5DE6B19FC617200F96993 /* GameListViewController.m */,
 				232764671A113B1400207D03 /* ControllerViewController.h */,
 				232764681A113B1400207D03 /* ControllerViewController.m */,
+				2350627E1A20781F00BF172D /* Controls */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -290,11 +302,11 @@
 		23FCFBE419F57C970072CAD0 /* GamePadStart */ = {
 			isa = PBXGroup;
 			children = (
+				23A9341C1A3628FF001B12BE /* LaunchScreen.xib */,
 				23FCFBED19F57C970072CAD0 /* SAFAppDelegate.h */,
 				23FCFBEE19F57C970072CAD0 /* SAFAppDelegate.m */,
 				235062801A20784C00BF172D /* Sockets */,
 				2350627F1A20782F00BF172D /* ViewControllers */,
-				2350627E1A20781F00BF172D /* Controls */,
 				2350627D1A2077D600BF172D /* Helpers */,
 				2328151F1A1286FA004EB34C /* ButtonImages */,
 				23FCFBF019F57C970072CAD0 /* Images.xcassets */,
@@ -396,6 +408,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				he,
+				Base,
 			);
 			mainGroup = 23FCFBD219F57C960072CAD0;
 			productRefGroup = 23FCFBDC19F57C960072CAD0 /* Products */;
@@ -413,9 +427,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23A9341D1A3628FF001B12BE /* LaunchScreen.xib in Resources */,
 				2328152E1A1286FA004EB34C /* Y_DOWN.png in Resources */,
 				230DBE9D1A1D176B0001E5AB /* Logo_Transparent.png in Resources */,
 				232815291A1286FA004EB34C /* A_UP.png in Resources */,
+				23A934231A362FE9001B12BE /* Logo180180.png in Resources */,
 				2328152F1A1286FA004EB34C /* Y_UP.png in Resources */,
 				23C14D6E1A1BC42600F4DFA6 /* Knob.png in Resources */,
 				232815281A1286FA004EB34C /* A_DOWN.png in Resources */,
@@ -423,8 +439,10 @@
 				23FCFBE919F57C970072CAD0 /* InfoPlist.strings in Resources */,
 				2334BC2D1A169B97001DCB4F /* Dpad.png in Resources */,
 				235062841A2079EB00BF172D /* Logo120120.png in Resources */,
+				23A934261A3632BE001B12BE /* i5launchFIXED.png in Resources */,
 				2328152B1A1286FA004EB34C /* B_UP.png in Resources */,
 				23E323D71A23AE39004D9514 /* backgroundTexture.jpg in Resources */,
+				23A934271A3632BE001B12BE /* i4launchFIXED.png in Resources */,
 				23C14D6D1A1BC42600F4DFA6 /* Circle.png in Resources */,
 				235062851A2079EB00BF172D /* Logo8080.png in Resources */,
 				2328152A1A1286FA004EB34C /* B_DOWN.png in Resources */,
@@ -619,11 +637,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FacebookSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePadStart/GamePadStart-Prefix.pch";
 				INFOPLIST_FILE = "GamePadStart/GamePadStart-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FacebookSDK.framework",
+					"$(PROJECT_DIR)/FacebookSDK.framework/Versions/A",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -634,11 +664,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FacebookSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GamePadStart/GamePadStart-Prefix.pch";
 				INFOPLIST_FILE = "GamePadStart/GamePadStart-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FacebookSDK.framework",
+					"$(PROJECT_DIR)/FacebookSDK.framework/Versions/A",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

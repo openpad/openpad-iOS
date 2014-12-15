@@ -38,8 +38,6 @@
     [self addSubview:_stickImgView];
 }
 
-
-#warning Radially inward shadow maybe????!??!??
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
@@ -54,51 +52,95 @@
     /** Animate! */
     CGPoint temp = [[touches anyObject] locationInView:self];
     
-    int x, y;
     
-    NSLog(@"%i, %i", x, y);
-    
-    if(temp.x < 0)
-    {
-        x = 0;
-    }
-    else if(temp.x > self.bounds.size.width)
-    {
-        x = self.bounds.size.width;
-    }
-    else
-    {
-        x= temp.x;
-    }
-    
-    if(temp.y < 0)
-    {
-        y = 0 ;
-    }
-    else if(temp.y > self.bounds.size.height)
-    {
-        y = self.bounds.size.height;
-    }
-    else
-    {
-        y= temp.y;
-    }
-    
-    float locX = x / (double)  self.frame.size.width;
-    float locY = y / (double) self.frame.size.height;
+    float locX = temp.x / (double)  self.frame.size.width;
+    float locY = temp.y / (double) self.frame.size.height;
     locX -= .5;
     locY -= .5;
     
-    locY *= -1;
+    locY *= 2; ///Make Y negative so bottom is negative top is postive
+    locX *= 2;
     
+    float dist = sqrtf(  locX*locX + locY*locY   );
+    float theta = atan2f(locY, locX);
+    if(dist > 1)
+    {
+        dist = 1;
+        locX = dist*cosf(theta);
+        locY = dist*sinf(theta);
+        
+        temp.x = ((locX + 1)/2.0)*self.frame.size.width;
+        temp.y = ((locY + 1)/2.0)*self.frame.size.height;
+    }
+    
+    locY *= -1;
     r.data[@"position"] = @{@"x": [NSNumber numberWithFloat:locX], @"y": [NSNumber numberWithFloat:locY]};
     
     [[ControllerViewController sharedInstance].game sendRequest:r];
-
     
-
-    _stickImgView.frame = CGRectMake(x - self.bounds.size.width/4, y - self.bounds.size.height/4, self.bounds.size.width/2, self.bounds.size.height/2);
+    _stickImgView.frame = CGRectMake(temp.x - self.bounds.size.width/4, temp.y - self.bounds.size.height/4, self.bounds.size.width/2, self.bounds.size.height/2);
 }
+
+#warning Radially inward shadow maybe????!??!??
+//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    [super touchesBegan:touches withEvent:event];
+//    
+//    /** Send request */
+//    Request* r = [[Request alloc] initWithOp:5];
+//    r.data[@"controlid"] = [NSNumber numberWithInt:self.idNum];
+//    r.data[@"action"] = [NSNumber numberWithInt:1];
+//    
+//    
+//    
+//    /** Animate! */
+//    CGPoint temp = [[touches anyObject] locationInView:self];
+//    
+//    int x, y;
+//    
+//    NSLog(@"%i, %i", x, y);
+//    
+//    if(temp.x < 0)
+//    {
+//        x = 0;
+//    }
+//    else if(temp.x > self.bounds.size.width)
+//    {
+//        x = self.bounds.size.width;
+//    }
+//    else
+//    {
+//        x= temp.x;
+//    }
+//    
+//    if(temp.y < 0)
+//    {
+//        y = 0 ;
+//    }
+//    else if(temp.y > self.bounds.size.height)
+//    {
+//        y = self.bounds.size.height;
+//    }
+//    else
+//    {
+//        y= temp.y;
+//    }
+//    
+//    float locX = x / (double)  self.frame.size.width;
+//    float locY = y / (double) self.frame.size.height;
+//    locX -= .5;
+//    locY -= .5;
+//    
+//    locY *= -1;
+//    
+//    r.data[@"position"] = @{@"x": [NSNumber numberWithFloat:locX], @"y": [NSNumber numberWithFloat:locY]};
+//    
+//    [[ControllerViewController sharedInstance].game sendRequest:r];
+//
+//    
+//
+//    _stickImgView.frame = CGRectMake(x - self.bounds.size.width/4, y - self.bounds.size.height/4, self.bounds.size.width/2, self.bounds.size.height/2);
+//}
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -136,50 +178,38 @@
     /** Animate! */
     CGPoint temp = [[touches anyObject] locationInView:self];
     
-    int x, y;
     
-    NSLog(@"%i, %i", x, y);
-    
-    if(temp.x < 0)
-    {
-        x = 0;
-    }
-    else if(temp.x > self.bounds.size.width)
-    {
-        x = self.bounds.size.width;
-    }
-    else
-    {
-        x= temp.x;
-    }
-    
-    if(temp.y < 0)
-    {
-        y = 0 ;
-    }
-    else if(temp.y > self.bounds.size.height)
-    {
-        y = self.bounds.size.height;
-    }
-    else
-    {
-        y= temp.y;
-    }
-    
-    float locX = x / (double)  self.frame.size.width;
-    float locY = y / (double) self.frame.size.height;
+    float locX = temp.x / (double)  self.frame.size.width;
+    float locY = temp.y / (double) self.frame.size.height;
     locX -= .5;
     locY -= .5;
     
-    locY *= -1;
+    locY *= 2; ///Make Y negative so bottom is negative top is postive
+    locX *= 2;
+    
+    float dist = sqrtf(  locX*locX + locY*locY   );
+    float theta = atan2f(locY, locX);
+    if(dist > 1)
+    {
+        dist = 1;
+        locX = dist*cosf(theta);
+        locY = dist*sinf(theta);
+        
+        temp.x = ((locX + 1)/2.0)*self.frame.size.width;
+        temp.y = ((locY + 1)/2.0)*self.frame.size.height;
+    }
+    
+    NSLog(@"Phys Locs: %f, %f", temp.x, temp.y);
+    NSLog(@"LocX,Y: %f, %f", locX, locY);
 
+    
+    locY *= -1;
     
     r.data[@"position"] = @{@"x": [NSNumber numberWithFloat:locX], @"y": [NSNumber numberWithFloat:locY]};
     
     [[ControllerViewController sharedInstance].game sendRequest:r];
-
     
-    _stickImgView.frame = CGRectMake(x - self.bounds.size.width/4, y - self.bounds.size.height/4, self.bounds.size.width/2, self.bounds.size.height/2);
+    _stickImgView.frame = CGRectMake(temp.x - self.bounds.size.width/4, temp.y - self.bounds.size.height/4, self.bounds.size.width/2, self.bounds.size.height/2);
 }
 
 

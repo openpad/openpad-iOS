@@ -67,7 +67,7 @@
         {
             NSString *jsonString = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
             
-            NSLog(@"JSON: %@", jsonString);
+//            NSLog(@"JSON: %@", jsonString);
             
             char end = 0;
             
@@ -119,6 +119,8 @@
                                     /** Go back to discovery*/
                                     [[ControllerViewController sharedInstance] disconnected:nil];
             }];
+            
+            [[SocketManager manager] disconnectAll];
 
             
             

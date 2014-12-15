@@ -60,9 +60,9 @@
         // If no errors, let's view the JSON
         if (json != nil && err == nil)
         {
-            NSString *jsonString = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+//            NSString *jsonString = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
             
-            NSLog(@"JSON: %@", jsonString);
+//            NSLog(@"JSON: %@", jsonString);
             
             char end = 0;
             

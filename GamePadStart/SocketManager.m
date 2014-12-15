@@ -11,6 +11,10 @@
 #include <ifaddrs.h>
 #import "UserData.h"
 #include <arpa/inet.h>
+#import "ControllerViewController.h"
+#include <netinet/in.h>
+
+
 
 @implementation SocketManager
 
@@ -46,7 +50,7 @@ static SocketManager* instance;
     GCDAsyncUdpSocket* temp = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
     NSError* err;
     if(![temp enableBroadcast:YES error:&err]){
-        NSLog(@"error enabling broadcast: %@", err);
+//        NSLog(@"error enabling broadcast: %@", err);
     }
     char c = 'a';
     NSData * pingData = [NSData dataWithBytes:&c length:1];
@@ -61,20 +65,58 @@ static SocketManager* instance;
     _rfrshTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:_gamesViewController.refreshControl selector:@selector(endRefreshing) userInfo:nil repeats:YES];
 }
 
+
 /** Process UDP Responses */
 -(void)udpSocket:(GCDAsyncUdpSocket*)socket didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext{
-//    NSLog(@"Received data from %@", address);
+    NSLog(@"Received data from %@", address);
     const char* arr = [address bytes];
-    if(arr[2] == 0x27 && arr[3] == 0x0f)
-    {
-        const unsigned char* arr2 = [data bytes];
-        int port = (arr2[0])*256+(arr2[1]);
-        char addr[100];
-        sprintf(addr, "%0d.%0d.%0d.%0d", arr[4], arr[5], arr[6], arr[7]);
-//        NSLog(@"ip = %s, port = %d", addr, port);
-        
-        [self joinGame:[NSString stringWithUTF8String:addr] onPort:port];
+//    
+    for (int x = 0; x < sizeof(arr); x++) {
+//        NSLog(@"%x",arr[x]%255);
     }
+    
+//    struct sockaddr_in ip;
+//    ip.sin_family = AF_INET;
+//    ip.sin_port = htons(6003);
+//    inet_pton(AF_INET, "0.0.0.0", &ip.sin_addr);
+//    
+//    NSData * discoveryHost = [NSData dataWithBytes:&ip length:ip.sin_len];
+    const unsigned char* arr2 = [data bytes];
+
+    int port = (arr2[0])*256+(arr2[1]);
+
+    char addr[100];
+    
+    int ip1 = arr[4]%256;
+    if(arr[4] < 0)
+    {
+        ip1 = 256 + arr[4];
+    }
+    
+    int ip2 = arr[5]%256;
+    if(arr[5] < 0)
+    {
+        ip2 = 256 + arr[5];
+    }
+    
+    int ip3 = arr[6]%256;
+    if(arr[6] < 0)
+    {
+        ip3 = 256 + arr[6];
+    }
+    
+    int ip4 = arr[7]%256;
+    if(arr[7] < 0)
+    {
+        ip4 = 256 + arr[7];
+    }
+    
+    
+    sprintf(addr, "%0i.%0i.%0i.%0i", ip1, ip2, ip3, ip4);
+//    NSLog(@"ip = %s, port = %d", addr, port);
+    
+    [self joinGame:[NSString stringWithUTF8String:addr] onPort:port];
+
 }
 
 /** Connect to games found with UDP using TCP */
@@ -97,7 +139,7 @@ static SocketManager* instance;
     [self.attemptedSockets addObject:curSock];
         
     NSError *err = nil;
-    NSLog(@"Connecting to address: %@ : %d", ip, port);
+//    NSLog(@"Connecting to address: %@ : %d", ip, port);
     if(![curSock connectToHost:ip onPort:port error:&err])
     {
         NSLog(@"I goofed: %@", err);
@@ -107,7 +149,7 @@ static SocketManager* instance;
 /** If connected, send data and start to read */
 - (void)socket:(GCDAsyncSocket *)sender didConnectToHost:(NSString *)host port:(UInt16)port
 {
-    NSLog(@"A socket connected");
+//    NSLog(@"A socket connected");
     
     Request* r = [[Request alloc] initWithOp:0];
     
@@ -121,6 +163,7 @@ static SocketManager* instance;
     [_connections addObject:newGame];
     
     [sender readDataWithTimeout:-1 tag:0];
+    [ControllerViewController sharedInstance].game = nil;
 }
 
 @end

@@ -44,6 +44,12 @@
 {
     [super viewDidLoad];
     
+//    if(!UIInterfaceOrientationIsPortrait([[UIDevice currentDevice] orientation]))
+//    {
+//        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+//        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+//    }
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -81,6 +87,11 @@
 {
     [self discoverServers];
     [self.tableView reloadData];
+//    if(!UIInterfaceOrientationIsPortrait([[UIDevice currentDevice] orientation]))
+//    {
+//        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+//        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+//    }
 }
 
 - (void)didReceiveMemoryWarning
